@@ -1,0 +1,28 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: List files in repo
+        run: ls -la
+
+      - name: Show contents of text files
+        run: |
+          for f in *.txt; do
+            [ -f "$f" ] && echo "===== $f =====" && cat "$f"
+          done
+          echo "Build OK"
+
+  deploy:
+    needs: build
